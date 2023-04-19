@@ -1,3 +1,5 @@
+# to ensure that all typescript files are moved to a seperated directory set 
+# `"outDir" : "Directorypath" in the compiler options of tsconfig file
 # uuid v4 is used to autogenerate the id 
 # when working with prisma run the following commands
 # after installing all the necessary dependencies for typescript

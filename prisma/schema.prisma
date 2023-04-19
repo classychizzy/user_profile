@@ -8,31 +8,31 @@ datasource db {
 }
 
 model address {
-  addressId   Int          @id @default(autoincrement())
-  state       String       @db.VarChar(255)
-  city        String       @db.VarChar(255)
-  street      String       @db.VarChar(255)
-  profile     Int?         @unique(map: "profile")
-  userprofile userprofile? @relation(fields: [profile], references: [profile], onDelete: NoAction, onUpdate: NoAction, map: "address_ibfk_1")
+  addressId     Int         @id @default(autoincrement())
+  state         String      @db.VarChar(255)
+  city          String      @db.VarChar(255)
+  street        String      @db.VarChar(255)
+  userprofileId Int //the address is assigned to one profile
+  userprofile   userprofile @relation(fields: [userprofileId], references: [userprofile_Id])
 }
 
 model user {
-  first_name  String       @db.VarChar(255)
-  last_name   String       @db.VarChar(255)
-  password    String       @db.VarChar(50)
-  email       String?      @unique(map: "email") @db.VarChar(255)
-  created_at  DateTime?    @db.Date
-  updated_at  DateTime?    @db.Date
-  USERID      Int          @id @default(autoincrement())
-  userprofile userprofile?
+  first_name  String        @db.VarChar(255)
+  last_name   String        @db.VarChar(255)
+  password    String        @db.VarChar(50)
+  email       String        @unique(map: "email") @db.VarChar(255)
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt //shows the time the user model is updated
+  USERID      Int           @id @default(autoincrement())
+  userprofile userprofile[]
 }
 
 model userprofile {
-  username       String   @db.VarChar(255)
-  email          String   @db.VarChar(255)
-  phone_number   String   @db.VarChar(25)
-  profile        Int?     @unique(map: "profile")
-  userprofile_Id Int      @id @default(autoincrement())
-  address        address?
-  user           user?    @relation(fields: [profile], references: [USERID], onDelete: NoAction, onUpdate: NoAction, map: "userprofile_ibfk_1")
+  username       String    @db.VarChar(255)
+  email          String    @db.VarChar(255)
+  phone_number   String    @db.VarChar(25)
+  userprofile_Id Int       @id @default(autoincrement())
+  USERID         Int // id of the specified user
+  address        address[]
+  user           user      @relation(fields: [USERID], references: [USERID])
 }
