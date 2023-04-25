@@ -17,7 +17,6 @@ const John = await prisma.user.upsert({
         created_at: formattedDate, 
         updated_at: formattedDate,
         password:'encryptedpassword',
-        USERID: 1,
         userprofile: {
             create: {
                 username: 'jdoe',

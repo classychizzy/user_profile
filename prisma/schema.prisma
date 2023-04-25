@@ -12,19 +12,22 @@ model address {
   state         String      @db.VarChar(255)
   city          String      @db.VarChar(255)
   street        String      @db.VarChar(255)
-  userprofileId Int //the address is assigned to one profile
+  userprofileId Int
   userprofile   userprofile @relation(fields: [userprofileId], references: [userprofile_Id])
+
+  @@index([userprofileId], map: "address_userprofileId_fkey")
 }
 
 model user {
-  first_name  String        @db.VarChar(255)
-  last_name   String        @db.VarChar(255)
-  password    String        @db.VarChar(50)
-  email       String        @unique(map: "email") @db.VarChar(255)
-  created_at  DateTime      @default(now())
-  updated_at  DateTime      @updatedAt //shows the time the user model is updated
-  USERID      Int           @id @default(autoincrement())
-  userprofile userprofile[]
+  first_name   String        @db.VarChar(255)
+  last_name    String        @db.VarChar(255)
+  email        String        @unique(map: "email") @db.VarChar(255)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  password     String        @db.VarChar(50)
+  userId       String        @id @default(uuid())
+  RefreshToken RefreshToken?
+  userprofile  userprofile[]
 }
 
 model userprofile {
@@ -32,7 +35,17 @@ model userprofile {
   email          String    @db.VarChar(255)
   phone_number   String    @db.VarChar(25)
   userprofile_Id Int       @id @default(autoincrement())
-  USERID         Int // id of the specified user
+  id             String
   address        address[]
-  user           user      @relation(fields: [USERID], references: [USERID])
+  user           user      @relation(fields: [id], references: [userId])
+
+  @@index([id], map: "userprofile_id_fkey")
+}
+
+model RefreshToken {
+  id          String   @id
+  hashedToken String
+  createdAt   DateTime @default(now())
+  user_Id     String
+  user        user     @relation(fields: [id], references: [userId], onDelete: Cascade)
 }
