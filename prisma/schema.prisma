@@ -8,14 +8,12 @@ datasource db {
 }
 
 model address {
-  addressId     Int         @id @default(autoincrement())
-  state         String      @db.VarChar(255)
-  city          String      @db.VarChar(255)
-  street        String      @db.VarChar(255)
-  userprofileId Int
-  userprofile   userprofile @relation(fields: [userprofileId], references: [userprofile_Id])
-
-  @@index([userprofileId], map: "address_userprofileId_fkey")
+  addressId Int    @id @default(autoincrement())
+  state     String @db.VarChar(255)
+  city      String @db.VarChar(255)
+  street    String @db.VarChar(255)
+  user_Id   Int
+  user      user   @relation(fields: [user_Id], references: [Id])
 }
 
 model user {
@@ -23,21 +21,21 @@ model user {
   email        String        @unique(map: "email") @db.VarChar(255)
   created_at   DateTime      @default(now())
   updated_at   DateTime      @updatedAt
-  password     String        @db.VarChar(50)
-  userId       String        @id @default(uuid())
+  password     String        @db.VarChar(255)
+  userId       String        @unique @default(uuid())
+  Id           Int           @id @default(autoincrement())
   RefreshToken RefreshToken?
   userprofile  userprofile[]
+  address      address[]
 }
 
 model userprofile {
-  first_name     String    @db.VarChar(255)
-  last_name      String    @db.VarChar(255)
-  email          String    @db.VarChar(255)
-  phone_number   String    @db.VarChar(25)
-  userprofile_Id Int       @id @default(autoincrement())
-  id             String
-  address        address[]
-  user           user      @relation(fields: [id], references: [userId])
+  first_name    String @db.VarChar(255)
+  last_name     String @db.VarChar(255)
+  phone_number  String @db.VarChar(25)
+  userprofileId Int    @id @default(autoincrement())
+  id            Int
+  user          user   @relation(fields: [id], references: [Id])
 
   @@index([id], map: "userprofile_id_fkey")
 }
@@ -46,6 +44,6 @@ model RefreshToken {
   id          String   @id
   hashedToken String
   createdAt   DateTime @default(now())
-  user_Id     String
-  user        user     @relation(fields: [id], references: [userId], onDelete: Cascade)
+  userId      String   @unique
+  user        user     @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }

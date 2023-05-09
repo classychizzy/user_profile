@@ -1,7 +1,7 @@
 import db from './connect';
 import { hashString } from '../utils/hashString';
 
-// retrieve all user related information from the db
+
 export const findEmail = async (email: string) => {
     const User = await db.user.findUnique({
         where: {
@@ -42,14 +42,22 @@ export const findByUsernameorEmail = async (username: string, email: string) => 
     });
 }
 
-
 export const createUser = async (user: any) => {
+    console.log("userObject:",user);
     user.password = await hashString(user.password);
     
-    return db.user.create({
-        data: user
-    });
-}
+    return await db.user.create({
+        // optional chaining property (?) is used to check if the parent object is defined
+        data: user,
+            
+        });
+    };
+        
+
+
+
+    
+
 
 export const getAllUsers = async () => {
     return db.user.findMany({
@@ -60,4 +68,4 @@ export const getAllUsers = async () => {
         },
 
     });
-}
+};

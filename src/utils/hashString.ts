@@ -1,3 +1,4 @@
+// a script for hashing the password
 import bcrypt from "bcrypt";
 
 export const hashString = async(str: string) => {
