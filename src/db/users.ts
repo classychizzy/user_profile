@@ -2,6 +2,7 @@ import db from './connect';
 import { hashString } from '../utils/hashString';
 
 
+
 export const findEmail = async (email: string) => {
     const User = await db.user.findUnique({
         where: {
@@ -32,7 +33,7 @@ export const findByUsernameorEmail = async (username: string, email: string) => 
         where: {
             OR: [
                 {
-                    username,
+                     username,
                 },
                 {
                     email,
@@ -53,11 +54,6 @@ export const createUser = async (user: any) => {
         });
     };
         
-
-
-
-    
-
 
 export const getAllUsers = async () => {
     return db.user.findMany({

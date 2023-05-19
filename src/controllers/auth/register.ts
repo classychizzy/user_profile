@@ -1,13 +1,24 @@
 //authorization for the user registration
 import { createUser, findByUsernameorEmail } from '../../db/users';
 
+
 export const register = async (req: {
     body: any, user: any,
 }, res: any) => {
     const { username, email, password, userprofile, address } = req.body;
+    // check if the email is a valid email
+    
+    function isValidEmail(email: string): boolean {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+      }
+
+  
     try {
         // condition to check if the user already exists
         const user = await findByUsernameorEmail(username, email);
+        
+        
         if (user) {
             const result = {
                 message: 'User already exists',
@@ -15,13 +26,21 @@ export const register = async (req: {
                 status: 409,
             };
             return res.status(409).json(result);
-            //check if the user profile has an address
         }
 
         // create a new user
         if (!user) {
-            
-            const user = await createUser({
+    
+            // check if the email is a valid email
+            if (!isValidEmail(email)) {
+                const result = {
+                    message: 'Invalid email',
+                    status: 400,
+                };
+                return res.status(400).json(result);
+            }
+             
+            const user  = await createUser({
                 username,
                 email,
                 password,
@@ -36,13 +55,14 @@ export const register = async (req: {
                     create: {
                         state: address?.state,
                         city: address?.city,
-                        street:address?.street,
+                        street: address?.street,
                     
                     }
                 }
-                    
+                  
                 
-            }).then ((response) => {
+            })
+            .then ((response) => {
                 const result = {
                     message: 'User created successfully',
                     data: response,

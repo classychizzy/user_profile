@@ -1,31 +1,31 @@
-import db from '../../db/connect';
 import { findByUsernameorEmail } from '../../db/users';
+import { addRefreshToken } from '../../db/token';
 import { genAccessToken, genRefreshToken } from '../../utils/gentoken';
 import bcrypt from "bcrypt";
 import { randomUUID } from 'crypto';
-import { hashString } from '../../utils/hashString';
+
+
 
 export const login = async (req: {
     body: any; user: any; 
 }, res: any) => {
+   
+   
+    
     try {
-        if (!req.body.username) {
-            return res.status(400).json({ error: "No Username provided" })
+        if (!req.body.username || !req.body.email) {
+            return res.status(400).json({ error: "No Username or email provided" })
         } 
         
         if (!req.body.password) {
             return res.status(400).json({ error: "No Password provided" })
         }
 
-        if (!req.body.email) {
-            return res.status(400).json({ error: "No email provided" })
-        }
-
-
-        const {username, password } = req.body;
+    // figure out how to make the req.body accept both username and email
+        const {username, email, password }  = req.body;
 
         // user can be validated by email or password
-        const user = await findByUsernameorEmail(username, username);
+        const user = await findByUsernameorEmail(username, email);
 
         if (!user) {
             return res.status(404).json({error: "user not found"})
@@ -38,7 +38,7 @@ export const login = async (req: {
 
         const accesstoken = genAccessToken(user);
         const tokenId = randomUUID();
-        const refreshToken = genRefreshToken(user, tokenId);
+        const refreshToken = genRefreshToken(user);
 
         res.cookie('refreshtoken', refreshToken, {
             httpOnly: true,
@@ -46,7 +46,9 @@ export const login = async (req: {
             maxAge: 1000 * 60 * 60 * 24 * 30 // 30 days
         });
 
-        addRefreshToken(tokenId, user.userId);
+      // add refresh token to db
+        addRefreshToken(tokenId, user.userId, refreshToken);
+        return res.json({accesstoken, user});
 
     } catch (err) {
         console.log(err);

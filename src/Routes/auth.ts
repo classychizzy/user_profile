@@ -1,5 +1,6 @@
 import express from 'express';
 import { register } from '../controllers/auth/register';
+import { login } from '../controllers/auth/login';
 
 export const Authrouter = express.Router();
 /**
@@ -18,4 +19,4 @@ Authrouter.get('/', (req, res) => {
 //registration endpoint
 Authrouter.post('/register', register);
 //login endpoint
-Authrouter.post('/login', )
+Authrouter.post('/login', login)

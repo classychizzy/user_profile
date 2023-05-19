@@ -27,13 +27,32 @@ export const deleteAllRefreshTokens = async (userId: string) => {
 
 export const addRefreshToken = async (id: string, userId: string, refreshToken: string) => {
     const hashedToken = await hashString(refreshToken);
-    return db.refreshToken.create({
-        data: {
-            id,
+    const existingToken = await db.refreshToken.findFirst({
+        where: {
             userId,
-            hashedToken
         }
     });
+    if (existingToken) {
+        return db.refreshToken.update({
+            where: {
+                userId,
+            },
+            data: {
+                id,
+                userId,
+                hashedToken: String(hashedToken),
+            }
+        });
+    }
+    else {
+        return db.refreshToken.create({
+            data: {
+                id,
+                userId,
+                hashedToken: String(hashedToken),
+            }
+        });
+    }
 };
 
 export const tokenExistsInDb = async (userId: string, refreshToken: string) => {
