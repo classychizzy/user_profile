@@ -1,5 +1,5 @@
 import { Response, NextFunction} from 'express';
-import { findByUsernameorEmail } from '../db/users';
+import { findByUsernameorEmail} from '../db/users';
 
 export const validateRegistration = async (req: any, res: Response, next:NextFunction) => {
     const {email, password, username} = req.body;

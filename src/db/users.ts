@@ -3,7 +3,10 @@ import { hashString } from '../utils/hashString';
 
 
 
+
 export const findEmail = async (email: string) => {
+    // implement method for validating email
+
     const User = await db.user.findUnique({
         where: {
             email: email
@@ -28,6 +31,9 @@ export const findUsername = async (username: string) => {
     });
 } 
 
+// method to help find the user by username or email. search type is used 
+// to indicate if the search is by username or email
+
 export const findByUsernameorEmail = async (username: string, email: string) => {
     return db.user.findFirst({
         where: {
@@ -42,7 +48,6 @@ export const findByUsernameorEmail = async (username: string, email: string) => 
         }
     });
 }
-
 export const createUser = async (user: any) => {
     console.log("userObject:",user);
     user.password = await hashString(user.password);

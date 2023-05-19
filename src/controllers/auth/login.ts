@@ -6,39 +6,42 @@ import { randomUUID } from 'crypto';
 
 
 
+
 export const login = async (req: {
     body: any; user: any; 
 }, res: any) => {
    
-   
+    const {username, email, password }  = req.body;
+    if ((!username && !email) || !password) {
+        return res.status(400).json({ message: 'Username or email and password are required' });
+      }
     
+      let loggedInUser;
+    
+
     try {
-        if (!req.body.username || !req.body.email) {
-            return res.status(400).json({ error: "No Username or email provided" })
-        } 
+    
+
+        if (username) {
+            loggedInUser = await findByUsernameorEmail(username, username);
+           
+        } else if (email) {
+            loggedInUser = await findByUsernameorEmail(email, email);
+            
+        }
         
-        if (!req.body.password) {
-            return res.status(400).json({ error: "No Password provided" })
+        if (!loggedInUser) {
+            return res.status(401).json({error: "Invalid credentials"})
         }
 
-    // figure out how to make the req.body accept both username and email
-        const {username, email, password }  = req.body;
-
-        // user can be validated by email or password
-        const user = await findByUsernameorEmail(username, email);
-
-        if (!user) {
-            return res.status(404).json({error: "user not found"})
-        }
-
-        const match = await bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(password, loggedInUser.password);
         if (!match) {
             return res.status(401).json({error: "Invalid credentials"})
         }
 
-        const accesstoken = genAccessToken(user);
+        const accesstoken = genAccessToken(loggedInUser);
         const tokenId = randomUUID();
-        const refreshToken = genRefreshToken(user);
+        const refreshToken = genRefreshToken(loggedInUser);
 
         res.cookie('refreshtoken', refreshToken, {
             httpOnly: true,
@@ -47,8 +50,8 @@ export const login = async (req: {
         });
 
       // add refresh token to db
-        addRefreshToken(tokenId, user.userId, refreshToken);
-        return res.json({accesstoken, user});
+        addRefreshToken(tokenId, loggedInUser.userId, refreshToken);
+        return res.json({accesstoken, loggedInUser});
 
     } catch (err) {
         console.log(err);

@@ -1,12 +1,12 @@
 //authorization for the user registration
-import { createUser, findByUsernameorEmail } from '../../db/users';
+import { createUser, findByUsernameorEmail} from '../../db/users';
 
 
 export const register = async (req: {
     body: any, user: any,
 }, res: any) => {
     const { username, email, password, userprofile, address } = req.body;
-    // check if the email is a valid email
+    // validation for the email
     
     function isValidEmail(email: string): boolean {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
