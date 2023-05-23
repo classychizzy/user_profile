@@ -104,7 +104,8 @@
 
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
+    "noPropertyAccessFromIndexSignature": true,       /* Enforces using indexed accessors for keys declared using an indexed type. */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
-    "outDir": "./dist"                                 /* Specify an output folder for all emitted files. */
-  }
+    "outDir": "./dist",                                /* Specify an output folder for all emitted files. */
+  },
 }

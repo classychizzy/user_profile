@@ -21,26 +21,11 @@ function main() {
             where: { email: 'johndoe@mail.com' },
             update: {},
             create: {
-                first_name: 'John',
-                last_name: 'Doe',
+                username: 'johndoe',
                 email: 'johndoe@mail.com',
                 created_at: formattedDate,
                 updated_at: formattedDate,
-                USERID: 1,
-                userprofile: {
-                    create: {
-                        username: 'jdoe',
-                        email: 'johndoe@mail.com',
-                        phone_number: '+23488888',
-                        address: {
-                            create: {
-                                state: 'Lagos',
-                                city: 'Eti-Osa',
-                                street: 'Garnet close',
-                            }
-                        }
-                    }
-                }
+                password: 'encryptedpassword',
             }
         });
         console.log(John);
