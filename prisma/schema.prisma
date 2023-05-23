@@ -8,42 +8,31 @@ datasource db {
 }
 
 model address {
-  addressId Int    @id @default(autoincrement())
-  state     String @db.VarChar(255)
-  city      String @db.VarChar(255)
-  street    String @db.VarChar(255)
-  user_Id   Int
-  user      user   @relation(fields: [user_Id], references: [Id])
+  addressId     Int         @id @default(autoincrement())
+  state         String      @db.VarChar(255)
+  city          String      @db.VarChar(255)
+  street        String      @db.VarChar(255)
+  userprofileId Int //the address is assigned to one profile
+  userprofile   userprofile @relation(fields: [userprofileId], references: [userprofile_Id])
 }
 
 model user {
-  username     String        @unique(map: "username") @db.VarChar(255)
-  email        String        @unique(map: "email") @db.VarChar(255)
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
-  password     String        @db.VarChar(255)
-  userId       String        @unique @default(uuid())
-  Id           Int           @id @default(autoincrement())
-  RefreshToken RefreshToken?
-  userprofile  userprofile[]
-  address      address[]
+  first_name  String        @db.VarChar(255)
+  last_name   String        @db.VarChar(255)
+  password    String        @db.VarChar(50)
+  email       String        @unique(map: "email") @db.VarChar(255)
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt //shows the time the user model is updated
+  USERID      Int           @id @default(autoincrement())
+  userprofile userprofile[]
 }
 
 model userprofile {
-  first_name    String @db.VarChar(255)
-  last_name     String @db.VarChar(255)
-  phone_number  String @db.VarChar(25)
-  userprofileId Int    @id @default(autoincrement())
-  id            Int
-  user          user   @relation(fields: [id], references: [Id])
-
-  @@index([id], map: "userprofile_id_fkey")
-}
-
-model RefreshToken {
-  id          String   @id
-  hashedToken String
-  createdAt   DateTime @default(now())
-  userId      String   @unique
-  user        user     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  username       String    @db.VarChar(255)
+  email          String    @db.VarChar(255)
+  phone_number   String    @db.VarChar(25)
+  userprofile_Id Int       @id @default(autoincrement())
+  USERID         Int // id of the specified user
+  address        address[]
+  user           user      @relation(fields: [USERID], references: [USERID])
 }

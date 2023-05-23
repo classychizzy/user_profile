@@ -11,27 +11,29 @@ const John = await prisma.user.upsert({
     where: { email:'johndoe@mail.com'},
     update: {},
     create: {
-        username:'johndoe',
+        first_name: 'John',
+        last_name: 'Doe',
         email:'johndoe@mail.com',
         created_at: formattedDate, 
         updated_at: formattedDate,
         password:'encryptedpassword',
+        USERID: 1,
         userprofile: {
             create: {
-                first_name: 'John',
-                last_name: 'Doe',
-                phone_number: '1234567890',
-            },},
-        address: {
-            create: {
-                street: '123 Main St',
-                city: 'New York',
-                state: 'NY',
-            },
-          },
+                username: 'jdoe',
+                email: 'johndoe@mail.com',
+                phone_number: '+23488888',
+                address: {
+                    create:{
+                        state: 'Lagos',
+                        city: 'Eti-Osa',
+                        street: 'Garnet close',
+                    }
+                }
+            }
         }
-  }
-)
+    }
+})
 console.log(John);
 }
 
