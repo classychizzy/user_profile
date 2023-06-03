@@ -1,6 +1,7 @@
 import express from 'express';
 import { register } from '../controllers/auth/register';
 import { login } from '../controllers/auth/login';
+import { UpdateUser } from '../controllers/update';
 
 export const Authrouter = express.Router();
 /**
@@ -20,3 +21,5 @@ Authrouter.get('/', (req, res) => {
 Authrouter.post('/register', register);
 //login endpoint
 Authrouter.post('/login', login)
+// update user endpoint
+Authrouter.put('/update/:userId', UpdateUser);

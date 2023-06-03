@@ -15,6 +15,7 @@ app.use(Authrouter);
 app.use('/api/v1', Authrouter);
 app.use('api/v1/register', Authrouter);
 app.use('api/v1/login', Authrouter);
+app.use('api/v1/update/:userId', Authrouter);
 app.listen(3000, () => {
     console.log(`Server running on port ${port}`);
     });

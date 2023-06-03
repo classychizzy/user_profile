@@ -58,7 +58,9 @@ export const createUser = async (user: any) => {
             
         });
     };
-        
+
+
+
 
 export const getAllUsers = async () => {
     return db.user.findMany({

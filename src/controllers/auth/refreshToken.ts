@@ -5,7 +5,7 @@ import { genRefreshToken, genAccessToken } from "../../utils/gentoken";
 const refreshAccessToken = async (req: any, res: any) => {
     const user = req.user;
     const newTokenId = randomUUID();
-    const newRefreshToken = genRefreshToken(user, newTokenId);
+    const newRefreshToken = genRefreshToken(user);
 
     res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
