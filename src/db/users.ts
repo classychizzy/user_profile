@@ -49,7 +49,7 @@ export const findByUsernameorEmail = async (username: string, email: string) => 
     });
 }
 export const createUser = async (user: any) => {
-    console.log("userObject:",user);
+    // console.log("userObject:",user);
     user.password = await hashString(user.password);
     
     return await db.user.create({

@@ -23,3 +23,4 @@ Authrouter.post('/register', register);
 Authrouter.post('/login', login)
 // update user endpoint
 Authrouter.put('/update/:userId', UpdateUser);
+//update endpoints to include other models
