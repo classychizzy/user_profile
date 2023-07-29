@@ -1,7 +1,8 @@
 import express from 'express';
-import { register } from '../controllers/auth/register';
-import { login } from '../controllers/auth/login';
-import { UpdateUser } from '../controllers/update';
+import { validateRegistration } from '../middlewares/validateregistration';
+import { login, register, updateUser } from '../controllers/auth/authController';
+import { updateAddress } from '../controllers/address/addressController';
+
 
 export const Authrouter = express.Router();
 /**
@@ -18,9 +19,10 @@ Authrouter.get('/', (req, res) => {
     res.send('welcome to userprofile api');
 });
 //registration endpoint
-Authrouter.post('/register', register);
+Authrouter.post('/register', validateRegistration ,register);
 //login endpoint
 Authrouter.post('/login', login)
 // update user endpoint
-Authrouter.put('/update/:userId', UpdateUser);
-//update endpoints to include other models
+Authrouter.put('/update/:userId', updateUser);
+// update address endpoint
+Authrouter.put('/update/address/:userId', updateAddress);

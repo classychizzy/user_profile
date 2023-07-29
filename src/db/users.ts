@@ -3,10 +3,8 @@ import { hashString } from '../utils/hashString';
 
 
 
-
 export const findEmail = async (email: string) => {
     // implement method for validating email
-
     const User = await db.user.findUnique({
         where: {
             email: email
@@ -48,19 +46,18 @@ export const findByUsernameorEmail = async (username: string, email: string) => 
         }
     });
 }
+// find a way to hash password without creating a user
 export const createUser = async (user: any) => {
     // console.log("userObject:",user);
+
     user.password = await hashString(user.password);
     
     return await db.user.create({
         // optional chaining property (?) is used to check if the parent object is defined
         data: user,
             
-        });
-    };
-
-
-
+    });
+};
 
 export const getAllUsers = async () => {
     return db.user.findMany({

@@ -7,32 +7,32 @@ const formattedDate = now.toISOString();
 
 
 async function main() {
-const John = await prisma.user.upsert({
-    where: { email:'johndoe@mail.com'},
+  const John = await prisma.user.upsert({
+    where: { email: 'johndoe@mail.com' },
     update: {},
     create: {
-        username:'johndoe',
-        email:'johndoe@mail.com',
-        created_at: formattedDate, 
-        updated_at: formattedDate,
-        password:'encryptedpassword',
-        userprofile: {
-            create: {
-                first_name: 'John',
-                last_name: 'Doe',
-                phone_number: '1234567890',
-            },},
-        address: {
-            create: {
-                street: '123 Main St',
-                city: 'New York',
-                state: 'NY',
-            },
-          },
-        }
+      first_name: 'John',
+      last_name: 'Doe',
+      phone_number:'656890',
+      username: 'johndoe',
+      email: 'johndoe@mail.com',
+      created_at: formattedDate,
+      updated_at: formattedDate,
+      password: 'encryptedpassword',
+    
+
+     
+      address: {
+        create: {
+          street: '123 Main St',
+          city: 'New York',
+          state: 'NY',
+        },
+      },
+    }
   }
-)
-console.log(John);
+  )
+  console.log(John);
 }
 
 main()
