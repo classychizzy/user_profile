@@ -1,5 +1,14 @@
 import db from "../../db/connect"
+import { findByUsernameorEmail } from "../../db/users";
 import {Request, Response} from "express";
+
+export const registerAddress = async (req: Request, res: Response) => {
+  // find the user by username or email
+  const { username, email } = req.body
+
+  await findByUsernameorEmail(username, email)
+
+}
 
 export const updateAddress = async (req: Request, res: Response) => {
   

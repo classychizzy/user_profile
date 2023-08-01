@@ -1,4 +1,7 @@
-import { createUser, findByUsernameorEmail } from '../../db/users';
+import {  findByUsernameorEmail } from '../../db/users';
+// validation methods and middleware 
+import { validationRules, validateError } from '../../middlewares/validateregistration';
+import { createUser } from '../../db/users';
 import { addRefreshToken } from '../../db/token';
 import { genAccessToken, genRefreshToken } from '../../utils/gentoken';
 import bcrypt from "bcrypt";
@@ -6,11 +9,13 @@ import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import db from '../../db/connect';
 import { hashString } from '../../utils/hashString';
+import { ValidationError } from 'express-validator';
 
 // user registration
 export const register = async (req: Request, res: Response) => {
-  // create a new user from the body of the request
   
+  // create a new user from the body of the request
+   
    const data = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -19,31 +24,25 @@ export const register = async (req: Request, res: Response) => {
     password: req.body.password,
     phone_number: req.body.phone_number
    };
-    console.log(data)
+    
     try{
-      await createUser(data)
+      // how to use schema validation before registering the user
+
+      validationRules();
+      // if validation  passed, hash the password and register the user
+     
+     // hash the password
+      const hashedPassword = await hashString(data.password);
+      const user = await createUser(data);
+      console.log("user:", user);
+      // figure out how to log errors from validation Error middleware.
+
     }
-    
-    
-    
-    
-    
-    
-         /*   .then ((response) => {
-                const result = {
-                    message: 'User created successfully',
-                    data: response,
-                    status: 201,
-                };
-                return res.status(201).json(result);
-            }
-            );
-        }
-    } catch (error) {
+     catch (error ) {
         console.log('error in register', error);
 
         return res.status(500).json(error);
-    }  */
+    } 
 };
 
 export const login = async (req: Request, res: Response) => {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { validateRegistration } from '../middlewares/validateregistration';
+import { validateError } from '../middlewares/validateregistration';
 import { login, register, updateUser } from '../controllers/auth/authController';
 import { updateAddress } from '../controllers/address/addressController';
 
@@ -19,7 +19,7 @@ Authrouter.get('/', (req, res) => {
     res.send('welcome to userprofile api');
 });
 //registration endpoint
-Authrouter.post('/register', validateRegistration ,register);
+Authrouter.post('/register' ,validateError,register);
 //login endpoint
 Authrouter.post('/login', login)
 // update user endpoint
