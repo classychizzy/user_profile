@@ -1,6 +1,5 @@
 import db from './connect';
 import { User } from '../utils/interfaces';
-import { hashString } from '../utils/hashString';
 
 
 

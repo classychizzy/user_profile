@@ -1,12 +1,61 @@
 import db from "../../db/connect"
-import { findByUsernameorEmail } from "../../db/users";
+// import users
+
 import {Request, Response} from "express";
 
 export const registerAddress = async (req: Request, res: Response) => {
   // find the user by username or email
-  const { username, email } = req.body
+  const {userId} = req.params;
 
-  await findByUsernameorEmail(username, email)
+  // link the address to a userid
+  const user = await db.user.findUnique({
+    where: {
+      userId: userId,
+    }
+  });
+
+
+  const data = {
+    state: req.body.state,
+    city: req.body.city,
+    street: req.body.street,
+  };
+
+try {
+  if (user) {
+    await db.address.create({
+      data: {
+        ...data,
+        user: {
+          connect: {
+            userId: user.userId,
+          },
+        },
+      },
+    }).then((response) => {
+      if (response) {
+        const result = {
+          statusCode: 200,
+          success: true,
+          message: 'address created successfully',
+          data: response,
+        };
+        return res.status(200).json(result);
+      }
+    });
+  }
+  
+ 
+}
+catch (error: any) {
+  const result = {
+    statusCode: 500,
+    success: false,
+    message: 'address not created',
+    data: error.message,
+  };
+  return res.status(500).json(result);
+}
 
 }
 

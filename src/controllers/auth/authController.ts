@@ -1,6 +1,7 @@
 import {  findByUsernameorEmail } from '../../db/users';
 // validation methods and middleware 
-import { validationRules, validateError } from '../../middlewares/validateregistration';
+import { validationRules } from '../../middlewares/validateregistration';
+// import db from '../../db/connect';
 import { createUser } from '../../db/users';
 import { addRefreshToken } from '../../db/token';
 import { genAccessToken, genRefreshToken } from '../../utils/gentoken';
@@ -11,10 +12,20 @@ import db from '../../db/connect';
 import { hashString } from '../../utils/hashString';
 import { ValidationError } from 'express-validator';
 
+
 // user registration
 export const register = async (req: Request, res: Response) => {
+  // check if the user exists
+  if (req.body.username) {
+    const user = await findByUsernameorEmail(req.body.username, req.body.email);
+    if (user) {
+      return res.status(401).json({ message: 'username already exists' });
+    }
+  }
   
   // create a new user from the body of the request
+  // find a way to use schema validation before registering the user and hash password
+  
    
    const data = {
     first_name: req.body.first_name,
@@ -24,21 +35,22 @@ export const register = async (req: Request, res: Response) => {
     password: req.body.password,
     phone_number: req.body.phone_number
    };
+
+   
     
     try{
       // how to use schema validation before registering the user
 
       validationRules();
       // if validation  passed, hash the password and register the user
-     
-     // hash the password
-      const hashedPassword = await hashString(data.password);
+    data.password = await hashString(data.password);
+    
       const user = await createUser(data);
       console.log("user:", user);
       // figure out how to log errors from validation Error middleware.
 
     }
-     catch (error ) {
+     catch (error: any) {
         console.log('error in register', error);
 
         return res.status(500).json(error);

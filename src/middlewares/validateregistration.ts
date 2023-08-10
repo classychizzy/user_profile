@@ -18,7 +18,7 @@ import { User } from '../utils/interfaces';
     check('phone_number', 'Phone number is required').notEmpty().isMobilePhone('any');
 }
 
- export const validateError = (req: Request, res: Response, next: NextFunction) => {
+ export const requestError = (req: Request, res: Response, next: NextFunction) => {
 
    //error message is not displaying as expected
    const errors = validationResult(req);
