@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+
 import {Authrouter} from './Routes/auth';
 import cors from 'cors';
 const app = express();
@@ -13,7 +14,7 @@ app.use(Authrouter);
 
 
 app.use('/api/v1', Authrouter);
-app.use('api/v1/register', Authrouter);
+app.use('api/v1/register',  Authrouter);
 app.use('api/v1/login', Authrouter);
 app.use('api/v1/update/:userId', Authrouter);
 app.use('api/v1/update/address/:user_Id', Authrouter);

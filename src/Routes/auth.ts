@@ -1,5 +1,5 @@
 import express from 'express';
-import { requestError } from '../middlewares/validateregistration';
+import { validateData } from '../middlewares/validateregistration';
 import { login, register, updateUser } from '../controllers/auth/authController';
 import { updateAddress } from '../controllers/address/addressController';
 
@@ -18,8 +18,8 @@ export const Authrouter = express.Router();
 Authrouter.get('/', (req, res) => {
     res.send('welcome to userprofile api');
 });
-//registration endpoint
-Authrouter.post('/register' ,requestError,register);
+//registration endpoint, call the express-validator chain method here
+Authrouter.post('/register', validateData, register);
 //login endpoint
 Authrouter.post('/login', login)
 // update user endpoint

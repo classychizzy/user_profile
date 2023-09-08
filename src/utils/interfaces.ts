@@ -1,9 +1,8 @@
 // make user a global object
  export interface User {
-    first_name: string,
-    last_name: string,
+    //define the user by properties that can be used to validate the user
     username: string,
     email: string,
     password: string,
-    phone_number: string
+   
   }
