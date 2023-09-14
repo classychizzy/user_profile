@@ -24,6 +24,7 @@ export const register = async (req: Request, res: Response) => {
   const data = {
     username: User.username,
     email: User.email,
+    password: User.password,
     phone_number: User.phone_number,
   };
   res.json({ data});
@@ -50,9 +51,11 @@ export const login = async (req: Request, res: Response) => {
 
   const { username, email, password } = req.body;
 
-  if ((!username && !email) || !password) {
+   if ((!username && !email) || !password) {
     return res.status(400).json({ message: 'Username or email and password are required' });
   }
+  // loggedinUser must exists in two states one that uses email and the other that uses
+  // username.
 
   let loggedInUser;
 

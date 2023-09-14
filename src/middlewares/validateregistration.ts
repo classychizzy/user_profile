@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-
-
+// validator js is used as the validator 
 import validator from "validator";
 import { findByUsernameorEmail } from "../db/users";
 
