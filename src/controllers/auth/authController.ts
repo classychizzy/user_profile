@@ -18,7 +18,7 @@ import { hashString } from '../../utils/hashString';
 export const register = async (req: Request, res: Response) => {
   
   const User = await createUser(req.body);
-  // createuser automatically hashes the password once  a user is created
+  // createuser automatically hashes the password then stores it in the db`
   if (!User) return res.json({error : "registration failed"})
 
   const data = {

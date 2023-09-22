@@ -47,7 +47,7 @@ export const findByUsernameorEmail = async (username: string, email: string) => 
         }
     });
 }
-// find a way to hash password without creating a user
+// once a user is created hash the password and store the hashed password in the database
 export const createUser = async (user: any) => {
     console.log("userObject:",user);
     user.password = await hashString(user.password)
