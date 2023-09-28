@@ -1,5 +1,8 @@
 import express from 'express';
 import { validateData } from '../middlewares/validateregistration';
+// authentication middleware
+import { verifyAccessToken, verifyRefreshToken } from '../middlewares/verifytokens';
+import { refreshAccessToken } from '../controllers/auth/refreshToken';
 import { login, register, updateUser } from '../controllers/auth/authController';
 import { updateAddress } from '../controllers/address/addressController';
 
@@ -22,6 +25,8 @@ Authrouter.get('/', (req, res) => {
 Authrouter.post('/register', validateData, register);
 //login endpoint
 Authrouter.post('/login', login)
+//list all users
+Authrouter.get('/users', verifyAccessToken,) // not yet implemented
 // update user endpoint
 Authrouter.put('/update/:userId', updateUser);
 // update address endpoint

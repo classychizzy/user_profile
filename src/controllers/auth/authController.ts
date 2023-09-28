@@ -79,9 +79,10 @@ export const login = async (req: Request, res: Response) => {
     if (!match) {
       return res.status(401).json({ error: "Invalid credentials" })
     }
-
+// a new access token is generated and sent to the user
     const accesstoken = genAccessToken(loggedInUser);
     const tokenId = randomUUID();
+    // a new refresh token is generated and sent to the user
     const refreshToken = genRefreshToken(loggedInUser);
 
     res.cookie('refreshtoken', refreshToken, {
@@ -187,6 +188,4 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export const DeleteUser = async (req: Request, res: Response) => {
-  // a function that removes a user from the db
-}
+// export const deleteUser = async (req: Request, res: Response) => {
