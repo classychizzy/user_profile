@@ -5,7 +5,7 @@ import {addRefreshToken, deleteRefreshToken  } from "../../db/token";
 import { genRefreshToken, genAccessToken } from "../../utils/gentoken";
 
 export const refreshAccessToken = async (req: Request, res: Response) => {
-    const user = req.user; 
+    const user = req.body;
     const newTokenId = randomUUID();
     const newRefreshToken = genRefreshToken(user);
 

@@ -6,7 +6,7 @@
     username: string,
     email: string,
     password: string,
-    jwtid: string,
+    //jwtid: string,
     
    
   }

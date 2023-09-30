@@ -20,6 +20,7 @@ export const verifyToken = async (token: string, secret: string) => {
             user = decoded as User;
         }
     });
+    
     return user;
 }
  // to verify the access token
