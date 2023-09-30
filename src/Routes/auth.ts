@@ -3,7 +3,7 @@ import { validateData } from '../middlewares/validateregistration';
 // authentication middleware
 import { verifyAccessToken, verifyRefreshToken } from '../middlewares/verifytokens';
 import { refreshAccessToken } from '../controllers/auth/refreshToken';
-import { login, register, updateUser } from '../controllers/auth/authController';
+import { getListOfUsers, login, register, updateUser } from '../controllers/auth/authController';
 import { updateAddress } from '../controllers/address/addressController';
 
 
@@ -23,10 +23,12 @@ Authrouter.get('/', (req, res) => {
 });
 //registration endpoint, call the express-validator chain method here
 Authrouter.post('/register', validateData, register);
+//refresh token endpoint
+Authrouter.post('/refresh-token', verifyRefreshToken, refreshAccessToken);
 //login endpoint
 Authrouter.post('/login', login)
 //list all users
-Authrouter.get('/users', verifyAccessToken,) // not yet implemented
+Authrouter.get('/users/:userId', verifyAccessToken, getListOfUsers) // not yet implemented
 // update user endpoint
 Authrouter.put('/update/:userId', updateUser);
 // update address endpoint

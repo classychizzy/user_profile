@@ -188,4 +188,25 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+export const getListOfUsers = async (req : Request, res: Response) => {
+
+  const userIdParam = Number(req.params['userId']);
+  const { userId } = req.body;
+
+  console.log(userIdParam);
+  console.log(userId);
+
+  const newTokenId = randomUUID();
+
+  const result = {
+    statusCode: 200,
+    success: true,
+    message: 'list of users',
+    data: [],
+  };
+  
+  return res.json(result);
+
+};
+
 // export const deleteUser = async (req: Request, res: Response) => {
