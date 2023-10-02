@@ -2,6 +2,7 @@ import { hashString } from "../utils/hashString";
 import db from "./connect";
 import bcrypt from "bcrypt";
 
+// consider working on a system to revoke tokens when necessary
 export const findRefreshTokenById =  async (userId: string) => {
     return db.refreshToken.findUnique({
         where: {

@@ -3,13 +3,14 @@ import { findByUsernameorEmail } from '../../db/users';
 // import { requestError, validationRules } from '../../middlewares/validateregistration';
 // import db from '../../db/connect';
 import { createUser } from '../../db/users';
-import { addRefreshToken } from '../../db/token';
+import { addRefreshToken, deleteRefreshToken } from '../../db/token';
 import { genAccessToken, genRefreshToken } from '../../utils/gentoken';
 import bcrypt from "bcrypt";
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 import db from '../../db/connect';
 import { hashString } from '../../utils/hashString';
+import { tokenVerfier } from '../../utils/verifytoken';
 //import { validateData } from '../../middlewares/validateregistration';
 
 
@@ -99,6 +100,25 @@ export const login = async (req: Request, res: Response) => {
     console.log(err);
     res.json({ err: "failed to load user" })
   }
+
+}
+
+// logout method
+export const Logout = async (req: Request, res: Response) => {
+const refresh_token = req.cookies.refreshtoken;
+if (!refresh_token) return res.status(400).json({ error: "no refresh token" });
+// doesn't check the db for the refresh token it verifies the token in session
+const user = tokenVerfier.validateRefreshToken(refresh_token);
+if (!user) return res.status(400).json({ error: "invalid refresh token" });
+
+
+// delete refresh token from db
+res.clearCookie('refreshtoken');
+deleteRefreshToken(user.userId);
+return res.status(200).json({ message: "logged out" });
+
+
+
 
 }
 
@@ -196,7 +216,8 @@ export const getListOfUsers = async (req : Request, res: Response) => {
   console.log(userIdParam);
   console.log(userId);
 
-  const newTokenId = randomUUID();
+  
+  //const newTokenId = randomUUID();
 
   const result = {
     statusCode: 200,

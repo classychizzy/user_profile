@@ -3,7 +3,7 @@ import { validateData } from '../middlewares/validateregistration';
 // authentication middleware
 import { verifyAccessToken, verifyRefreshToken } from '../middlewares/verifytokens';
 import { refreshAccessToken } from '../controllers/auth/refreshToken';
-import { getListOfUsers, login, register, updateUser } from '../controllers/auth/authController';
+import { getListOfUsers, login, register, updateUser, Logout } from '../controllers/auth/authController';
 import { updateAddress } from '../controllers/address/addressController';
 
 
@@ -27,8 +27,10 @@ Authrouter.post('/register', validateData, register);
 Authrouter.post('/refresh-token', verifyRefreshToken, refreshAccessToken);
 //login endpoint
 Authrouter.post('/login', login)
+//logout endpoint
+Authrouter.delete('/logout', Logout)
 //list all users
-Authrouter.get('/users/:userId', verifyAccessToken, getListOfUsers) // not yet implemented
+Authrouter.get('/users/:userId', verifyAccessToken, getListOfUsers)
 // update user endpoint
 Authrouter.put('/update/:userId', updateUser);
 // update address endpoint
