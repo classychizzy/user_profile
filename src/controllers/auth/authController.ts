@@ -35,8 +35,6 @@ export const register = async (req: Request, res: Response) => {
 
 
     // how to use schema validation before registering the user
-    //validation is not working
-
 
 
       // if validation  passed, hash the password and register the user
