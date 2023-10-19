@@ -206,29 +206,23 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getListOfUsers = async (req : Request, res: Response) => {
+export const getUser = async (req : Request, res: Response) => {
+  //something is wrong with this code
 
-  const userIdParam = Number(req.params['userId']);
+  const userIdParam = Number(req.params['userId']); //id here is user.Id 
   const { userId } = req.body;
-
+  
+// find a way to retrieve information about the user like username, email and phone number
+// let the details be returned in the console.
+   
   console.log(userIdParam);
   console.log(userId);
-
   
 
   
   //const newTokenId = randomUUID();
 
   
-  const result = {
-    statusCode: 200,
-    success: true,
-    message: 'list of users',
-    data: [],
-  };
-  
-  return res.json(result);
-
 };
 
 // export const deleteUser = async (req: Request, res: Response) => {

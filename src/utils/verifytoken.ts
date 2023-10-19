@@ -3,7 +3,7 @@ import { tokenExistsInDb } from '../db/token';
 import * as dotenv from 'dotenv';
 import { User } from './interfaces';
 // this could as well be directly implemented in the middleware but this is a better approach
-
+// creating seperate functions to handle the refresh and access token verification
 dotenv.config();
 
 export const tokenVerfier: any = {};
@@ -41,3 +41,5 @@ tokenVerfier.validateRefreshToken = async (token: string) => {
     // const user = await verifyToken(token, secret);
     // return user;
 }
+
+
