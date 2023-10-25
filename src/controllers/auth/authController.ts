@@ -225,4 +225,10 @@ export const getUser = async (req : Request, res: Response) => {
   
 };
 
-// export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response) => {
+const {userId} = req.params
+
+// delete the user with the corresponding userid
+// first i want to implement an approach where the user is authenticated
+// before we delete the user details.
+}
