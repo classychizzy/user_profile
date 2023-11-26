@@ -7,37 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model address {
+model Address {
   addressId Int    @id @default(autoincrement())
   state     String @db.VarChar(255)
   city      String @db.VarChar(255)
   street    String @db.VarChar(255)
-  user_Id   Int
-  user      user   @relation(fields: [user_Id], references: [Id])
+  user      User[] // two users can have the same address
 }
 
-model user {
+model User {
+  userId       String        @unique @default(uuid())
+  Id           Int           @id @default(autoincrement())
+  first_name   String        @db.VarChar(255)
+  last_name    String        @db.VarChar(255)
   username     String        @unique(map: "username") @db.VarChar(255)
+  phone_number String        @db.VarChar(25)
   email        String        @unique(map: "email") @db.VarChar(255)
   created_at   DateTime      @default(now())
   updated_at   DateTime      @updatedAt
   password     String        @db.VarChar(255)
-  userId       String        @unique @default(uuid())
-  Id           Int           @id @default(autoincrement())
+  addressId    Int? //each user has one address
   RefreshToken RefreshToken?
-  userprofile  userprofile[]
-  address      address[]
-}
+  address      Address?      @relation(fields: [addressId], references: [addressId])
 
-model userprofile {
-  first_name    String @db.VarChar(255)
-  last_name     String @db.VarChar(255)
-  phone_number  String @db.VarChar(25)
-  userprofileId Int    @id @default(autoincrement())
-  id            Int
-  user          user   @relation(fields: [id], references: [Id])
-
-  @@index([id], map: "userprofile_id_fkey")
+  @@unique([first_name, last_name]) // they can have the same name but not the same email
 }
 
 model RefreshToken {
@@ -45,5 +38,5 @@ model RefreshToken {
   hashedToken String
   createdAt   DateTime @default(now())
   userId      String   @unique
-  user        user     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }

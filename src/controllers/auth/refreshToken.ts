@@ -1,22 +1,26 @@
 import { randomUUID } from "crypto";
+
+import { Request, Response } from "express";
 import {addRefreshToken, deleteRefreshToken  } from "../../db/token";
 import { genRefreshToken, genAccessToken } from "../../utils/gentoken";
 
-const refreshAccessToken = async (req: any, res: any) => {
-    const user = req.user;
+export const refreshAccessToken = async (req: Request, res: Response) => {
+    const user = req.body;
     const newTokenId = randomUUID();
-    const newRefreshToken = genRefreshToken(user, newTokenId);
+    const newRefreshToken = genRefreshToken(user);
 
-    res.cookie("refreshToken", newRefreshToken, {
+    req.cookies("refreshToken", newRefreshToken, {
         httpOnly: true,
        maxAge: 1000 * 60 * 60 * 24 * 7, //  7days
     });
 
-    // delete old refresh token
-    deleteRefreshToken(user.jwtid);
-    addRefreshToken(newTokenId, user.id, newRefreshToken);
+    // delete old refresh token, the refresh rotation
+    
 
-    const accessToken = genAccessToken(user);
-    return res.json(accessToken);
+    deleteRefreshToken(user.jwtid);
+    addRefreshToken(newTokenId, user.userId, newRefreshToken);
+
+    const accessToken = genAccessToken(user)
+    return res.json({accessToken})
 
 }

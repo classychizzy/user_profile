@@ -1,6 +1,11 @@
 import express from 'express';
-import { register } from '../controllers/auth/register';
-import { login } from '../controllers/auth/login';
+import { validateData } from '../middlewares/validateregistration';
+// authentication middleware
+import { verifyAccessToken, verifyRefreshToken } from '../middlewares/verifytokens';
+import { refreshAccessToken } from '../controllers/auth/refreshToken';
+import { getUser, login, register, updateUser, Logout } from '../controllers/auth/authController';
+import { updateAddress } from '../controllers/address/addressController';
+
 
 export const Authrouter = express.Router();
 /**
@@ -16,7 +21,20 @@ export const Authrouter = express.Router();
 Authrouter.get('/', (req, res) => {
     res.send('welcome to userprofile api');
 });
-//registration endpoint
-Authrouter.post('/register', register);
+//registration endpoint, call the express-validator chain method here
+Authrouter.post('/register', validateData, register);
+//refresh token endpoint
+Authrouter.post('/refresh-token', verifyRefreshToken, refreshAccessToken);
 //login endpoint
 Authrouter.post('/login', login)
+//logout endpoint
+Authrouter.delete('/logout', Logout)
+//get  user details
+Authrouter.get('/users/:userId', verifyAccessToken, getUser)
+//generate new access token
+//AuthRouter.get('')
+// update user endpoint
+Authrouter.put('/update/:userId', updateUser);
+// update address endpoint
+Authrouter.put('/update/address/:userId', updateAddress);
+//delete user endpoint
