@@ -37,3 +37,4 @@ Authrouter.get('/users/:userId', verifyAccessToken, getUser)
 Authrouter.put('/update/:userId', updateUser);
 // update address endpoint
 Authrouter.put('/update/address/:userId', updateAddress);
+//delete user endpoint
