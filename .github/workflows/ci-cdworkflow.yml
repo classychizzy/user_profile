@@ -15,7 +15,7 @@ jobs:
       - name: build image
         run: docker build -t $user_profile/nodejs.app:latest .
       - name: publish image to docker hub
-        run: docker push $userprofile/nodejs.app:latest
+        run: docker push $user_profile/nodejs.app:latest
 
   deploy:
     needs: build
