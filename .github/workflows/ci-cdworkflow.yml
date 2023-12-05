@@ -13,9 +13,7 @@ jobs:
       - name: login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: build image
-
         run: docker build -t $userprofile/nodejs-app .
-
       - name: publish image to docker hub
         run: docker push $userprofile/nodejs-app:latest
 
@@ -28,4 +26,4 @@ jobs:
       - name: delete old container
         run: docker rm -f nodejs-app-container
       - name: run docker container
-        run: docker run -d -p 3000:3000 --name nodejs-app-container $userprofile/nodejs.app:latest
+        run: docker run -d -p 3000:3000 --name nodejs-app-container $userprofile/nodejs-app
