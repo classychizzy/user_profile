@@ -9,11 +9,11 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: checkout sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: build image
-        run: docker build -t $userprofile/nodejs-app:latest .
+        run: docker build -t $userprofile/nodejs-app .
       - name: publish image to docker hub
         run: docker push $userprofile/nodejs-app:latest
 
