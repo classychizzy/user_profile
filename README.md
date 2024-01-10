@@ -1,5 +1,17 @@
 # User_profile
-> Description - a user authentication system
+## Description 
+- a user authentication system, api implementation of signup, signin, login and logout routes.
+<p> **Languages and frameworks**
+<ol>
+<li> NodeJs </li>
+<li> typescript </li>
+<li> Express </li>
+<li> postgreSQL </li>
+<li> Prisma </li>
+</ol>
+</p>
+
+<p> **Challenges** - for this project i had to learn how to protect REST API routes with JWT and refresh token.
 > to ensure that all typescript files are moved to a seperated directory set 
 > `"outDir" : "Directorypath" in the compiler options of tsconfig file
 > uuid v4 is used to autogenerate the id 
