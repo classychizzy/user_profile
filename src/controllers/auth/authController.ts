@@ -195,12 +195,18 @@ export const updateUser = async (req: Request, res: Response) => {
 
 
 
-  } catch (err: any) {
+  } catch (err) {
+
+    let errorMessage = 'internal server error';
+
+    if (err instanceof Error) {
+      errorMessage = err.message;
+    }
     const result = {
       statusCode: 500,
       success: false,
-      message: 'user not updated',
-      data: err.message,
+      message: `user not updated + ${errorMessage}`,
+      data: null,
     };
     return res.status(500).json(result);
   }
@@ -231,4 +237,52 @@ const {userId} = req.params
 // delete the user with the corresponding userid
 // first i want to implement an approach where the user is authenticated
 // before we delete the user details.
+const user = await db.user.findUnique({
+  where: {
+    userId: userId,
+  }
+});
+
+if (!user) {
+  return res.status(401).json({ message: 'user does not exist' });
 }
+
+try {
+
+  await db.user.delete({
+    where: {
+      userId,
+    },
+  }).then((response) => {
+    if (response) {
+      const result = {
+        statusCode: 200,
+        success: true,
+        message: 'user deleted successfully',
+        data: response,
+      };
+      console.log(response);
+      // returns old value instead consider fixing this
+      return res.status(200).json(result);
+
+    }
+  
+  });
+
+}catch (err) {
+
+  let errorMessage = "Internal server Error";
+
+  if(err instanceof Error){
+    errorMessage = err.message;
+  }
+
+  const result = {
+    statusCode: 500,
+    success: false,
+    message: `User not deleted + ${errorMessage}`,
+    data: null,
+  };
+  
+}
+};

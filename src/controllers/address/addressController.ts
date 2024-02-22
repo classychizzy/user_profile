@@ -47,12 +47,18 @@ try {
   
  
 }
-catch (error: any) {
+catch (err) {
+
+  let errorMessage = ' internal server Error';
+
+  if (err instanceof Error) {
+    errorMessage = err.message;
+  }
   const result = {
     statusCode: 500,
     success: false,
-    message: 'address not created',
-    data: error.message,
+    message: `address not created + ${errorMessage}`,
+    data: null,
   };
   return res.status(500).json(result);
 }
@@ -109,13 +115,21 @@ export const updateAddress = async (req: Request, res: Response) => {
       }
       )
     }
-    catch (err: any) {
+    catch (err) {
+
+      let errorMessage = 'internal server error';
+
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      
       const result = {
         statusCode: 500,
         success: false,
-        message: 'address not updated',
-        data: err.message,
+        message: `address not updated + ${errorMessage}`,
+        data: null,
       };
       return res.status(500).json(result);
     }
 }
+
